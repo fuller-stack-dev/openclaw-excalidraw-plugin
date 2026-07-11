@@ -1,0 +1,31 @@
+{
+  "name": "@fuller-stack-dev/openclaw-excalidraw-plugin",
+  "version": "0.1.0",
+  "description": "OpenClaw plugin attaching the official Excalidraw MCP App server",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fuller-stack-dev/openclaw-excalidraw-plugin.git"
+  },
+  "keywords": [
+    "openclaw",
+    "openclaw-plugin",
+    "excalidraw",
+    "mcp",
+    "mcp-apps"
+  ],
+  "peerDependencies": {
+    "openclaw": ">=2026.7.2"
+  },
+  "peerDependenciesMeta": {
+    "openclaw": {
+      "optional": true
+    }
+  },
+  "openclaw": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}
