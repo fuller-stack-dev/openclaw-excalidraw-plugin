@@ -1,6 +1,6 @@
 {
   "name": "@fuller-stack-dev/openclaw-excalidraw-plugin",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "OpenClaw plugin attaching the official Excalidraw MCP App server",
   "type": "module",
   "license": "MIT",
@@ -8,13 +8,27 @@
     "type": "git",
     "url": "git+https://github.com/fuller-stack-dev/openclaw-excalidraw-plugin.git"
   },
+  "homepage": "https://github.com/fuller-stack-dev/openclaw-excalidraw-plugin#readme",
+  "bugs": {
+    "url": "https://github.com/fuller-stack-dev/openclaw-excalidraw-plugin/issues"
+  },
   "keywords": [
     "openclaw",
     "openclaw-plugin",
     "excalidraw",
     "mcp",
-    "mcp-apps"
+    "mcp-apps",
+    "diagrams"
   ],
+  "files": [
+    "index.js",
+    "openclaw.plugin.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test"
+  },
   "peerDependencies": {
     "openclaw": ">=2026.7.2"
   },
@@ -26,6 +40,22 @@
   "openclaw": {
     "extensions": [
       "./index.js"
-    ]
+    ],
+    "install": {
+      "npmSpec": "@fuller-stack-dev/openclaw-excalidraw-plugin",
+      "defaultChoice": "npm",
+      "minHostVersion": ">=2026.7.2"
+    },
+    "compat": {
+      "pluginApi": ">=2026.7.2"
+    },
+    "build": {
+      "openclawVersion": "2026.7.2"
+    },
+    "release": {
+      "publishToClawHub": true,
+      "publishToNpm": true,
+      "bundleRuntimeDependencies": false
+    }
   }
 }
