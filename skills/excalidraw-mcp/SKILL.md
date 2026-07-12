@@ -27,29 +27,37 @@ reply must carry the value there.
    `read_checkpoint`, `export_to_excalidraw`). They are app-only and not
    available to you.
 
-## Output per surface
+## Output rules (mandatory, every drawing)
 
-After `create_view` succeeds, shape your reply for where the user is:
+After every successful `create_view`, do ALL of these steps — none are
+optional:
 
-- **MCP Apps-capable surface** (Control UI with the app preview): the canvas
-  appears inside the tool card. Reply with one short sentence about what you
-  drew — do not restate the diagram contents.
-- **Text-only channel** (Telegram, Discord, CLI, or any surface without the
-  inline canvas): the user cannot see the canvas. In your reply:
-  1. Summarize the diagram in one or two sentences (what it shows, not every
-     element).
-  2. Offer the portable scene so they can open it themselves: wrap your
-     element array as an Excalidraw scene file —
-     `{"type":"excalidraw","version":2,"source":"openclaw","elements":<your array>,"appState":{}}`
-     — saved as `<topic>.excalidraw`. Attach the file if the channel supports
-     file attachments; otherwise offer the JSON in a code block on request.
-     The file opens at https://excalidraw.com (drag and drop or File → Open).
-- When unsure which kind of surface you are on, use the text-only behavior —
-  it degrades gracefully everywhere.
+1. Save the portable scene: write
+   `{"type":"excalidraw","version":2,"source":"openclaw","elements":<your array>,"appState":{}}`
+   to `diagrams/<short-topic-slug>.excalidraw` in your workspace (create the
+   `diagrams/` folder if needed). Drop any `cameraUpdate` entries from the
+   saved array — they are create_view streaming directives, not scene
+   elements. Overwrite the same file when revising the same diagram.
+2. Reply with one or two sentences saying what the diagram shows — never
+   restate every element in prose, and never paste raw element JSON into chat
+   unless the user explicitly asks for it.
+3. Deliver the scene. Unless the surface renders the inline app canvas
+   (Control UI app preview), the user CANNOT see what you drew, so this step
+   is the difference between a result and nothing: attach
+   `diagrams/<slug>.excalidraw` when the channel supports file attachments,
+   and otherwise your reply MUST end with this exact line (filled in):
+   "Editable scene saved at diagrams/<slug>.excalidraw — open it at
+   https://excalidraw.com (File → Open)."
+   Skip this step only when you can see your drawing rendered in an app
+   canvas on the current surface. When in doubt, include the line.
 
 ## Quality tips
 
 - Sketch structure first (boxes/containers), then arrows, then labels.
+- Label everything that carries meaning: every box gets a `label`, and arrows
+  get labels whenever the connection means something specific (sequence
+  messages like "POST /login", data flows, conditions). An unlabeled arrow in
+  a sequence or flow diagram is a bug.
 - Use `read_me`'s palette colors instead of inventing hex values.
 - For flow direction, lay out left-to-right or top-to-bottom and keep arrows
   orthogonal where possible.
