@@ -33,11 +33,20 @@ After every successful `create_view`, do ALL of these steps — none are
 optional:
 
 1. Save the portable scene: write
-   `{"type":"excalidraw","version":2,"source":"openclaw","elements":<your array>,"appState":{}}`
+   `{"type":"excalidraw","version":2,"source":"openclaw","elements":<converted array>,"appState":{"viewBackgroundColor":"#ffffff"}}`
    to `diagrams/<short-topic-slug>.excalidraw` in your workspace (create the
-   `diagrams/` folder if needed). Drop any `cameraUpdate` entries from the
-   saved array — they are create_view streaming directives, not scene
-   elements. Overwrite the same file when revising the same diagram.
+   `diagrams/` folder if needed). Overwrite the same file when revising the
+   same diagram. Converting the array is REQUIRED — `label` and
+   `cameraUpdate` are create_view conveniences, not valid Excalidraw JSON,
+   and excalidraw.com silently drops them (blank shapes, lost labels):
+   - Drop every `cameraUpdate` entry.
+   - Replace every shape/arrow `label` with a container-bound text pair:
+     remove the `label` prop, add
+     `"boundElements": [{"id": "t_<elementId>", "type": "text"}]` to the
+     element, and insert immediately after it:
+     `{"type":"text","id":"t_<elementId>","x":<element.x+10>,"y":<element.y+element.height/2-12>,"width":<element.width-20>,"height":24,"text":"<label text>","fontSize":16,"fontFamily":1,"textAlign":"center","verticalAlign":"middle","containerId":"<elementId>","originalText":"<label text>","autoResize":true}`
+     (Excalidraw recalculates exact text geometry on load; approximate
+     coordinates are fine, but both sides of the link must be present.)
 2. Reply with one or two sentences saying what the diagram shows — never
    restate every element in prose, and never paste raw element JSON into chat
    unless the user explicitly asks for it.
@@ -51,15 +60,43 @@ optional:
    Skip this step only when you can see your drawing rendered in an app
    canvas on the current surface. When in doubt, include the line.
 
+## Layout rules (design before you draw)
+
+Bad diagrams fail four ways: inconsistent box sizes, meaningless colors,
+crossing lines, disorganized arrangement. Prevent all four:
+
+- **Grid**: place boxes on a virtual grid — x positions every ~240px, y
+  positions every ~120px, minimum 30px horizontal / 25px vertical gaps.
+  Never place elements ad-hoc.
+- **Consistent sizing**: boxes with the same role get identical dimensions
+  (main nodes ~200×70, sub-nodes ~180×60, title banner ~400×50). Vary size
+  only to show hierarchy.
+- **Text must fit** (the #1 visible failure): box width ≥ label characters
+  × 9.5 at fontSize 16; labels max 28 characters per line (`\n` for a second
+  line, max 2); a labeled arrow must be at least label characters × 9.5 + 40
+  long. If a label feels tight, add 40px of width.
+- **Color = meaning**: pick ONE scheme per diagram — flow states (input
+  blue, decision yellow, success green, error red), layered zones, or
+  side-by-side comparison — and never mix schemes or color decoratively.
+  Take hex values from `read_me`'s palette.
+- **No crossing lines**: keep flow in one direction (left→right or
+  top→bottom); when a straight arrow would cross something, route an
+  L-shape via `points: [[0,0],[dx,0],[dx,dy]]`.
+- **Stream in z-order**: background zones first, then each shape followed by
+  its label and its outgoing arrows, decorations last. Array order is both
+  stacking order and the draw-on animation order viewers watch.
+- **Label everything that carries meaning**: every box, and every arrow
+  whose connection means something specific (sequence messages like
+  "POST /login", data flows, conditions). An unlabeled arrow in a sequence
+  or flow diagram is a bug.
+- **Fonts**: 20 for titles, 16 for labels, 14 minimum — never smaller.
+
+Pre-flight before calling `create_view`: check the longest label in each row
+against its box width (chars × 9.5), confirm meaningful arrows are labeled,
+and confirm no elements overlap.
+
 ## Quality tips
 
-- Sketch structure first (boxes/containers), then arrows, then labels.
-- Label everything that carries meaning: every box gets a `label`, and arrows
-  get labels whenever the connection means something specific (sequence
-  messages like "POST /login", data flows, conditions). An unlabeled arrow in
-  a sequence or flow diagram is a bug.
-- Use `read_me`'s palette colors instead of inventing hex values.
-- For flow direction, lay out left-to-right or top-to-bottom and keep arrows
-  orthogonal where possible.
-- Large diagrams: prefer fewer, well-labeled elements over exhaustive detail;
-  offer to zoom into a subsection as a follow-up drawing.
+- Prefer fewer, well-labeled elements over exhaustive detail; offer to zoom
+  into a subsection as a follow-up drawing.
+- Center the title over the diagram's estimated total width.
