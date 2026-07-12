@@ -1,6 +1,6 @@
 {
   "name": "@fuller-stack-dev/openclaw-excalidraw-plugin",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "OpenClaw plugin attaching the official Excalidraw MCP App server",
   "type": "module",
   "license": "MIT",
@@ -23,6 +23,7 @@
   "files": [
     "index.js",
     "openclaw.plugin.json",
+    "skills",
     "README.md",
     "LICENSE"
   ],

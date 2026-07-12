@@ -12,6 +12,7 @@
     "additionalProperties": false,
     "properties": {}
   },
+  "skills": ["./skills"],
   "mcpServers": {
     "excalidraw": {
       "transport": "streamable-http",

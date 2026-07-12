@@ -19,6 +19,7 @@ Restart the Gateway after installing or enabling the plugin. No configuration is
 - Agent tools `create_view` (draw/stream a diagram) and `read_me` (element format reference).
 - Tools the server marks app-only (`_meta.ui.visibility: ["app"]`, e.g. checkpoint save/restore) are never exposed to the model.
 - An interactive, hand-drawn Excalidraw canvas inside the tool card on MCP Apps-capable surfaces; text results everywhere else.
+- A bundled `excalidraw` skill that triggers when the user asks to draw, diagram, sketch, or visualize something: it teaches the agent the `read_me`-first element workflow and per-channel outputs — a short summary next to the inline canvas on app-capable surfaces, and a portable `.excalidraw` scene file (opens at excalidraw.com) for text-only channels.
 
 ## Compatibility
 
