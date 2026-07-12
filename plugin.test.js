@@ -58,10 +58,10 @@ test("icon is an HTTPS image URL", () => {
 test("bundled skill is declared, present, and packed", () => {
   assert.deepEqual(manifest.skills, ["./skills"]);
   assert.ok(pkg.files.includes("skills"), "skills dir must ship with the package");
-  const skillPath = join(root, "skills", "excalidraw", "SKILL.md");
-  assert.ok(existsSync(skillPath), "skills/excalidraw/SKILL.md must exist");
+  const skillPath = join(root, "skills", "excalidraw-mcp", "SKILL.md");
+  assert.ok(existsSync(skillPath), "skills/excalidraw-mcp/SKILL.md must exist");
   const skill = readFileSync(skillPath, "utf8");
-  assert.match(skill, /^---\nname: excalidraw\n/, "frontmatter must start with the skill name");
+  assert.match(skill, /^---\nname: excalidraw-mcp\n/, "frontmatter must start with the skill name");
   assert.match(skill, /description: .*(draw|diagram)/i, "description must carry draw/diagram triggers");
   assert.match(skill, /read_me/, "skill must teach the read_me-first workflow");
   assert.match(skill, /"type":"excalidraw","version":2/, "skill must include the portable scene shape");

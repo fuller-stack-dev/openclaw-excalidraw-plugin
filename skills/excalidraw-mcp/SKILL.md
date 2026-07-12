@@ -1,5 +1,5 @@
 ---
-name: excalidraw
+name: excalidraw-mcp
 description: Draw hand-drawn diagrams with the Excalidraw MCP tools. Use whenever the user asks to draw, diagram, sketch, chart, flowchart, mind-map, wireframe, whiteboard, or visualize something — architecture diagrams, sequence/flow charts, org charts, entity relationships, timelines, quick illustrations. Read this skill before the first excalidraw tool call in a session, and follow its per-channel output guidance so text-only channels still get a useful result.
 ---
 
